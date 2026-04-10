@@ -18,14 +18,6 @@ def error_msg_details(error: Exception):
         f"Traceback  :\n{traceback.format_exc()}"
     )
     return error_message
-
-class CustomException(Exception):
-    def __init__(self,error_message,error_details:sys):
-        super().__init__(error_message)
-        self.error_message=error_msg_details(error_message,error_details=error_details)
-
-    def __str__(self):
-        return self.error_message
     
 class CustomException(Exception):
     def __init__(self, error: Exception):

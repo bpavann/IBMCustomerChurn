@@ -4,3 +4,5 @@ matplotlib
 pandas
 scikit-learn
 numpy
+scikit-learn
+dataclasses
