@@ -2,10 +2,10 @@ import os
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
-
 try:
     from src.exception import CustomException
     from src.logger import logging
+    from src.components.data_transformation import DataTransformation
 except ImportError:
     # Fallback for direct execution
     import sys
@@ -15,12 +15,14 @@ except ImportError:
         sys.path.insert(0, str(project_root))
     from src.exception import CustomException
     from src.logger import logging
+    from src.components.data_transformation import DataTransformation
 
 @dataclass
 class DataIngestionConfig:
     raw_data_path=os.path.join("artifacts", "raw_data.csv")
     train_data_path=os.path.join("artifacts", "train_data.csv")
     test_data_path=os.path.join("artifacts", "test_data.csv")
+
 
 class DataIngestion:
     def __init__(self):
@@ -49,4 +51,7 @@ class DataIngestion:
         
 if __name__=="__main__":
     obj=DataIngestion()
-    obj.init_data_ingestion()
+    train_data, test_data=obj.init_data_ingestion()
+
+    data_trans=DataTransformation()
+    train_arr, test_arr,_=data_trans.inti_data_transformation(train_data, test_data)
