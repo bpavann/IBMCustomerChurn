@@ -209,4 +209,7 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
-.logs/
+logs/
+# CatBoost logs/info folders
+catboost_info/
+notebook/catboost_info/

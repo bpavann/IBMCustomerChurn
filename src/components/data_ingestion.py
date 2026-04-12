@@ -6,6 +6,7 @@ try:
     from src.exception import CustomException
     from src.logger import logging
     from src.components.data_transformation import DataTransformation
+    from src.components.model_trainer import ModelTrainer
 except ImportError:
     # Fallback for direct execution
     import sys
@@ -16,6 +17,7 @@ except ImportError:
     from src.exception import CustomException
     from src.logger import logging
     from src.components.data_transformation import DataTransformation
+    from src.components.model_trainer import ModelTrainer
 
 @dataclass
 class DataIngestionConfig:
@@ -55,3 +57,6 @@ if __name__=="__main__":
 
     data_trans=DataTransformation()
     train_arr, test_arr,_=data_trans.inti_data_transformation(train_data, test_data)
+
+    model_trainer=ModelTrainer()
+    print(model_trainer.init_model_trainer(train_arr,test_arr))
