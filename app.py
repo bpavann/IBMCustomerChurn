@@ -49,7 +49,11 @@ def predict():
             result=prediction.predict(final_new_data)
             logging.info(f"Prediction results: {result}")
             print(result)
-            return render_template('home.html', result=result[0])
+            if result[0] == 1:
+                output = "⚠️ Customer will CHURN"
+            else:
+                output = "✅ Customer will NOT CHURN"
+            return render_template('home.html', result=output)
         
     except Exception as e:
         raise CustomException(e)
