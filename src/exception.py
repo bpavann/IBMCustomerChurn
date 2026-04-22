@@ -12,7 +12,6 @@ def error_msg_details(error: Exception):
         f"at line number [{line_number}] "
         f"with message [{str(error)}]"
     )
-
     return error_message
     
 class CustomException(Exception):

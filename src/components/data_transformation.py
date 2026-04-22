@@ -6,21 +6,9 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
-
-try:
-    from src.exception import CustomException
-    from src.logger import logging
-    from src.utils import save_object
-except ImportError:
-    # Fallback for direct execution
-    import sys
-    from pathlib import Path
-    project_root = Path(__file__).parent.parent
-    if str(project_root) not in sys.path:
-        sys.path.insert(0, str(project_root))
-    from src.exception import CustomException
-    from src.logger import logging
-    from src.utils import save_object
+from src.exception import CustomException
+from src.logger import logging
+from src.utils import save_object
 
 @dataclass
 class DataTranformerConfig:
@@ -68,12 +56,13 @@ class DataTransformation:
             test_df=pd.read_csv(test_path)
             logging.info(f"Train and test data read successfully from {train_path} and {test_path}")
 
-            for df in [train_df, test_df]:
-                df['TotalCharges'] = pd.to_numeric(df['TotalCharges'], errors='coerce')
-                df['TotalCharges'] = df['TotalCharges'].fillna(0)
-                df.drop(['customerID'], axis=1, inplace=True)
-                df['Churn']=df['Churn'].map({'Yes':1, 'No':0})
-                logging.info("Data preprocessing completed successfully")
+            train_df['TotalCharges'] = pd.to_numeric(train_df['TotalCharges'], errors='coerce')
+            test_df['TotalCharges'] = pd.to_numeric(test_df['TotalCharges'], errors='coerce')
+            train_df.drop(['customerID'], axis=1, inplace=True)
+            test_df.drop(['customerID'], axis=1, inplace=True)
+            train_df['Churn'] = train_df['Churn'].map({'Yes': 1, 'No': 0})
+            test_df['Churn'] = test_df['Churn'].map({'Yes': 1, 'No': 0})
+            logging.info("Data preprocessing completed successfully")
             
             # Define categorical and numerical columns
             target='Churn'

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Churn Prediction</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #0f172a;
+        color: #e2e8f0;
+        text-align: center;
+    }
+
+    header {
+        background: #1e3a8a;
+        padding: 20px;
+        color: white;
+    }
+
+    .container {
+        margin-top: 40px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .form-box {
+        background: #111827;
+        padding: 30px;
+        border-radius: 12px;
+        width: 600px;
+        box-shadow: 0 0 20px rgba(59,130,246,0.2);
+        border: 1px solid #1e3a8a;
+        text-align: left;
+    }
+
+    label {
+        font-weight: bold;
+        color: #93c5fd;
+    }
+
+    select, input {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0 15px 0;
+        border: 1px solid #334155;
+        border-radius: 6px;
+        background: #0f172a;
+        color: #e2e8f0;
+    }
+
+    .btn {
+        width: 100%;
+        background: #2563eb;
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .btn:hover {
+        background: #1d4ed8;
+    }
+
+    .result {
+        margin-top: 20px;
+        font-size: 20px;
+        color: #38bdf8;
+        text-align: center;
+    }
+
+    footer {
+        margin-top: 50px;
+        padding: 15px;
+        background: #1e293b;
+        color: #94a3b8;
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>📡 Customer Churn Prediction</h1>
+    <p>AI Based Telecom Customer Retention System</p>
+</header>
+
+<div class="container">
+
+<div class="form-box">
+
+<form action="{{ url_for('predict') }}" method="post">
+
+    <label>Customer ID</label>
+    <input type="text" name="customerID" required>
+
+    <label>Gender</label>
+    <select name="gender" required>
+        <option disabled selected value="">Select</option>
+        <option value="Female">Female</option>
+        <option value="Male">Male</option>
+    </select>
+
+    <label>Senior Citizen</label>
+    <select name="SeniorCitizen" required>
+        <option disabled selected value="">Select</option>
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+    </select>
+
+    <label>Partner</label>
+    <select name="Partner" required>
+        <option disabled selected value="">Select</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+    </select>
+
+    <label>Dependents</label>
+    <select name="Dependents" required>
+        <option disabled selected value="">Select</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+    </select>
+
+    <label>Tenure (Months)</label>
+    <input type="number" name="tenure" min="0" required>
+
+    <label>Phone Service</label>
+    <select name="PhoneService" required>
+        <option disabled selected value="">Select</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+    </select>
+
+    <label>Multiple Lines</label>
+    <select name="MultipleLines" required>
+        <option disabled selected value="">Select</option>
+        <option value="No">No</option>
+        <option value="Yes">Yes</option>
+        <option value="No phone service">No phone service</option>
+    </select>
+
+    <label>Internet Service</label>
+    <select name="InternetService" required>
+        <option disabled selected value="">Select</option>
+        <option value="DSL">DSL</option>
+        <option value="Fiber optic">Fiber optic</option>
+        <option value="No">No</option>
+    </select>
+
+    <label>Online Security</label>
+    <select name="OnlineSecurity" required>
+        <option disabled selected value="">Select</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+        <option value="No internet service">No internet service</option>
+    </select>
+
+    <label>Online Backup</label>
+    <select name="OnlineBackup" required>
+        <option disabled selected value="">Select</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+        <option value="No internet service">No internet service</option>
+    </select>
+
+    <label>Device Protection</label>
+    <select name="DeviceProtection" required>
+        <option disabled selected value="">Select</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+        <option value="No internet service">No internet service</option>
+    </select>
+
+    <label>Tech Support</label>
+    <select name="TechSupport" required>
+        <option disabled selected value="">Select</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+        <option value="No internet service">No internet service</option>
+    </select>
+
+    <label>Streaming TV</label>
+    <select name="StreamingTV" required>
+        <option disabled selected value="">Select</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+        <option value="No internet service">No internet service</option>
+    </select>
+
+    <label>Streaming Movies</label>
+    <select name="StreamingMovies" required>
+        <option disabled selected value="">Select</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+        <option value="No internet service">No internet service</option>
+    </select>
+
+    <label>Contract</label>
+    <select name="Contract" required>
+        <option disabled selected value="">Select</option>
+        <option value="Month-to-month">Month-to-month</option>
+        <option value="One year">One year</option>
+        <option value="Two year">Two year</option>
+    </select>
+
+    <label>Paperless Billing</label>
+    <select name="PaperlessBilling" required>
+        <option disabled selected value="">Select</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+    </select>
+
+    <label>Payment Method</label>
+    <select name="PaymentMethod" required>
+        <option disabled selected value="">Select</option>
+        <option value="Electronic check">Electronic check</option>
+        <option value="Mailed check">Mailed check</option>
+        <option value="Bank transfer (automatic)">Bank transfer</option>
+        <option value="Credit card (automatic)">Credit card</option>
+    </select>
+
+    <label>Monthly Charges</label>
+    <input type="number" step="0.01" name="MonthlyCharges" required>
+
+    <label>Total Charges</label>
+    <input type="number" step="0.01" name="TotalCharges" required>
+
+    <button type="submit" class="btn">Predict Churn</button>
+
+</form>
+
+{% if result %}
+<div class="result">
+    ⚠️ Customer Churn Prediction: <b>{{ result }}</b>
+</div>
+{% endif %}
+
+</div>
+
+</div>
+
+<footer>
+    © 2026 IBM Churn Prediction | ML + Flask System
+</footer>
+
+</body>
+</html>

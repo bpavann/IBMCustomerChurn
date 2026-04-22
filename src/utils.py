@@ -1,19 +1,9 @@
 import os
 import pickle
 import pandas as pd
+from src.exception import CustomException
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import accuracy_score,precision_score, recall_score, f1_score
-try:
-    from src.exception import CustomException
-except ImportError:
-    # Fallback for direct execution
-    import sys
-    from pathlib import Path
-    project_root = Path(__file__).parent.parent
-    if str(project_root) not in sys.path:
-        sys.path.insert(0, str(project_root))
-    from src.exception import CustomException
-    
 
 def save_object(file_path,obj):
     try:
@@ -24,6 +14,13 @@ def save_object(file_path,obj):
 
     except Exception as e:
         raise CustomException(e)
+
+def load_object(file_path):
+    try:
+        with open(file_path,'rb') as file_obj:
+            return pickle.load(file_obj)
+    except Exception as e:
+        raise CustomException
     
 def model_metrics(y_true, y_pred):
     try:
@@ -38,14 +35,12 @@ def model_metrics(y_true, y_pred):
     
 def evaluate_models(X_train, y_train, X_test, y_test, models, params):
     try:
-        model_names = []
-        train_acc_list = []
-        test_acc_list = []
-        gap_list = []
-
-        best_index = 0
+        best_model_name = None
         best_trained_model = None
         best_params = None
+        best_train_acc = 0
+        best_test_acc = -1
+        best_gap = float("inf")
 
         for i, (model_name, model) in enumerate(models.items()):
 
@@ -76,32 +71,22 @@ def evaluate_models(X_train, y_train, X_test, y_test, models, params):
 
             gap = abs(train_acc - test_acc)
 
-            # store results
-            model_names.append(model_name)
-            train_acc_list.append(train_acc)
-            test_acc_list.append(test_acc)
-            gap_list.append(gap)
-
-            # best model selection
-            best_gap = gap_list[best_index]
-            best_test_acc = test_acc_list[best_index]
-
             if (test_acc > best_test_acc) or \
-               (test_acc == best_test_acc and gap < best_gap):
-
-                best_index = i
+                (test_acc == best_test_acc and gap < best_gap):
+                best_model_name = model_name
                 best_trained_model = trained_model
                 best_params = model_params
-                best_model_name = model_name
+                best_train_acc = train_acc
+                best_test_acc = test_acc
+                best_gap = gap
 
         return {
             "best_model_name": best_model_name,
             "best_model": best_trained_model,
-            "best_model_name": model_names[best_index],
             "best_params": best_params,
-            "best_train_accuracy": train_acc_list[best_index],
-            "best_test_accuracy": test_acc_list[best_index],
-            "best_gap": gap_list[best_index]
+            "best_train_accuracy": best_train_acc,
+            "best_test_accuracy": best_test_acc,
+            "best_gap": best_gap
         }
 
     except Exception as e:

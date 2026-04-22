@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IBM Customer Churn Predictor</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #0f172a;
+        color: #e2e8f0;
+        text-align: center;
+    }
+
+    header {
+        background: #1e3a8a;
+        padding: 25px;
+        color: white;
+    }
+
+    .container {
+        margin-top: 100px;
+    }
+
+    .card {
+        background: #111827;
+        width: 520px;
+        margin: auto;
+        padding: 40px;
+        border-radius: 12px;
+        border: 1px solid #1e3a8a;
+        box-shadow: 0 0 20px rgba(59,130,246,0.2);
+    }
+
+    .btn {
+        display: inline-block;
+        margin-top: 20px;
+        background: #2563eb;
+        color: white;
+        padding: 12px 24px;
+        text-decoration: none;
+        border-radius: 6px;
+    }
+
+    .btn:hover {
+        background: #1d4ed8;
+    }
+
+    footer {
+        margin-top: 100px;
+        padding: 15px;
+        background: #1e293b;
+        color: #94a3b8;
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>📡 IBM Customer Churn Predictor</h1>
+    <p>Machine Learning Based Telecom Customer Retention System</p>
+</header>
+
+<div class="container">
+
+<div class="card">
+    <h2>Welcome 👋</h2>
+    <p>
+        Predict whether a telecom customer will churn based on contract, services, billing, and usage behavior.
+    </p>
+
+    <a href="{{ url_for('predict') }}" class="btn">Start Prediction</a>
+</div>
+
+</div>
+
+<footer>
+    © 2026 IBM Churn Project | ML + Flask Deployment
+</footer>
+
+</body>
+</html>

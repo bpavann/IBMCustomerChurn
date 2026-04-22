@@ -7,23 +7,9 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, AdaBoostClassifier
 from xgboost import XGBClassifier
 from catboost import CatBoostClassifier
-
-try:
-    from src.exception import CustomException
-    from src.utils import save_object,evaluate_models,model_metrics
-    from src.logger import logging
-    
-except ImportError:
-    # Fallback for direct execution
-    import sys
-    from pathlib import Path
-    project_root = Path(__file__).parent.parent
-    if str(project_root) not in sys.path:
-        sys.path.insert(0, str(project_root))
-    from src.exception import CustomException
-    from src.utils import save_object, evaluate_models,model_metrics
-    from src.logger import logging
-
+from src.exception import CustomException
+from src.utils import save_object,evaluate_models,model_metrics
+from src.logger import logging
 
 @dataclass
 class ModelTrainerConfig():
@@ -43,10 +29,10 @@ class ModelTrainer:
                 "L2 Logistic (Ridge)": LogisticRegression(penalty='l2', solver="lbfgs", max_iter=1000),
                 "K-Nearest Neighbors": KNeighborsClassifier(),
                 "SVC": SVC(),
-                "Decision Tress": DecisionTreeClassifier(),
+                "Decision Tree": DecisionTreeClassifier(),
                 "RandomForest": RandomForestClassifier(),
                 "GradientBoosting": GradientBoostingClassifier(),
-                "XGBoost": XGBClassifier(use_label_encode=False,eval_matric='logloss'),
+                "XGBoost": XGBClassifier(eval_metric='logloss'),
                 "CatBoost": CatBoostClassifier(verbose=False),
                 "AdaBoost": AdaBoostClassifier()
             }
@@ -83,7 +69,7 @@ class ModelTrainer:
                 "C": [0.01, 0.1, 1, 10]
             },
 
-            "KNN": {
+            "K-Nearest Neighbors": {
                 "n_neighbors": [3, 5, 7, 9],
                 "weights": ["uniform", "distance"]
             },
@@ -118,7 +104,7 @@ class ModelTrainer:
 
             best_model=model_report["best_model"]
             best_model_name=model_report["best_model_name"]
-            best_model.fit(X_train,y_train)
+
             logging.info("Best model found on both training and testing dataset")
             save_object(
                             file_path=self.model_trainer_config.trained_model_file_path,

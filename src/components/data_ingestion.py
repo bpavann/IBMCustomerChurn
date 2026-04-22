@@ -2,22 +2,11 @@ import os
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
-try:
-    from src.exception import CustomException
-    from src.logger import logging
-    from src.components.data_transformation import DataTransformation
-    from src.components.model_trainer import ModelTrainer
-except ImportError:
-    # Fallback for direct execution
-    import sys
-    from pathlib import Path
-    project_root = Path(__file__).parent.parent
-    if str(project_root) not in sys.path:
-        sys.path.insert(0, str(project_root))
-    from src.exception import CustomException
-    from src.logger import logging
-    from src.components.data_transformation import DataTransformation
-    from src.components.model_trainer import ModelTrainer
+from src.exception import CustomException
+from src.logger import logging
+from src.components.data_transformation import DataTransformation
+from src.components.model_trainer import ModelTrainer
+
 
 @dataclass
 class DataIngestionConfig:
@@ -52,11 +41,13 @@ class DataIngestion:
             raise CustomException(e)
         
 if __name__=="__main__":
-    obj=DataIngestion()
-    train_data, test_data=obj.init_data_ingestion()
+    logging.info("Starting the training pipeline")
+    data_ingestion=DataIngestion()
+    train_data, test_data=data_ingestion.init_data_ingestion()
+    logging.info("Starting data transformation")
+    data_transformation=DataTransformation()
+    train_arr, test_arr, _= data_transformation.inti_data_transformation(train_data, test_data)
 
-    data_trans=DataTransformation()
-    train_arr, test_arr,_=data_trans.inti_data_transformation(train_data, test_data)
-
+    logging.info("Starting model training")
     model_trainer=ModelTrainer()
-    print(model_trainer.init_model_trainer(train_arr,test_arr))
+    print(model_trainer.init_model_trainer(train_arr, test_arr))
