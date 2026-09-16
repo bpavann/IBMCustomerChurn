@@ -44,6 +44,7 @@ def predict():
             final_new_data=pd.DataFrame([input_data])
             logging.info(f"Final new data: {final_new_data}")
             print(final_new_data)
+            
 
             prediction=PredictionPipeline()
             result=prediction.predict(final_new_data)
@@ -59,4 +60,4 @@ def predict():
         raise CustomException(e)
 
 if __name__=="__main__":
-    app.run(debug=True)
+    app.run(debug=False,host="0.0.0.0", port=5000)

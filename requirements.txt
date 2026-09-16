@@ -2,10 +2,11 @@ Flask
 seaborn
 matplotlib
 pandas
-scikit-learn
+scikit-learn==1.8.0
 numpy
+pyarrow
 dill
-scikit-learn
 dataclasses
 xgboost
 catboost
+gunicorn

@@ -20,7 +20,7 @@ def load_object(file_path):
         with open(file_path,'rb') as file_obj:
             return pickle.load(file_obj)
     except Exception as e:
-        raise CustomException
+        raise CustomException(e)
     
 def model_metrics(y_true, y_pred):
     try:
