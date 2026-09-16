@@ -1,46 +1,41 @@
 pipeline {
-agent any
+    agent any
 
-```
-stages {
+    stages {
 
-    stage('Checkout') {
-        steps {
-            echo 'Checking out source code...'
-            checkout scm
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                sh 'docker build -t ibmcustomerchurn:${BUILD_NUMBER} .'
+            }
+        }
+
+        stage('Application Smoke Test') {
+            steps {
+                sh '''
+                    docker run -d \
+                        --name churn-test \
+                        -p 5001:5000 \
+                        ibmcustomerchurn:${BUILD_NUMBER}
+
+                    sleep 10
+
+                    docker exec churn-test \
+                        python -c "import urllib.request; print(urllib.request.urlopen('http://127.0.0.1:5000/').status)"
+                '''
+            }
         }
     }
 
-    stage('Install Dependencies') {
-        steps {
-            echo 'Installing Python dependencies...'
-            sh 'pip install -r requirements.txt'
+    post {
+        always {
+            sh 'docker rm -f churn-test || true'
+            sh 'docker rmi ibmcustomerchurn:${BUILD_NUMBER} || true'
         }
     }
-
-    stage('Build Docker Image') {
-        steps {
-            echo 'Building Docker image...'
-            sh 'docker build -t customer-churn-ibm .'
-        }
-    }
-
-    stage('Docker Build Complete') {
-        steps {
-            echo 'Customer Churn Docker image built successfully.'
-        }
-    }
-}
-
-post {
-    success {
-        echo 'CI pipeline completed successfully.'
-    }
-
-    failure {
-        echo 'CI pipeline failed.'
-    }
-}
-```
-
 }
