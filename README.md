@@ -2,89 +2,118 @@
 
 ## Project Overview
 
-This project is a Machine Learning web application that predicts whether a customer will churn (leave the service) or not. It is built using the IBM Telco Customer Churn dataset and deployed using Flask.
+End-to-end Machine Learning web application that predicts whether a telecom customer will churn based on customer, service, account, and billing information.
 
-The main goal is to help businesses identify customers who are likely to leave so that retention strategies can be applied in advance.
+The project covers data preprocessing, model training and evaluation, real-time prediction, containerization, and cloud deployment.
 
 ---
 
 ## Problem Statement
 
-Customer churn is a major problem in subscription-based businesses. Losing customers directly impacts revenue.
-
-This project aims to:
-- Analyze customer behavior data
-- Build a machine learning model to predict churn
-- Deploy the model as a web application for real-time prediction
+Predict whether a customer will leave the telecom service based on available customer and service information.
 
 ---
 
-## Dataset Information
+## Dataset
 
-The dataset contains customer information such as:
+**IBM Telco Customer Churn Dataset**
 
-- Customer demographics (gender, senior citizen, dependents)
-- Account information (tenure, contract type, payment method)
-- Services subscribed (internet service, phone service, streaming services)
-- Billing details (monthly charges, total charges)
+The dataset includes:
 
-Target variable:
-- Churn (Yes or No)
+* Customer demographics
+* Account information
+* Services subscribed
+* Billing information
+
+**Target:** `Churn` — Yes / No
 
 ---
 
 ## Tech Stack
 
-- Python
-- Pandas, NumPy
-- Scikit-learn
-- Flask
-- HTML, CSS (for frontend)
-- Pickle (for model serialization)
+* Python
+* Pandas
+* NumPy
+* Scikit-learn
+* XGBoost
+* CatBoost
+* Flask
+* HTML / CSS
+* Docker
+* Gunicorn
+* Render
 
 ---
 
 ## Machine Learning Workflow
 
-1. Data Collection
-2. Data Cleaning and Preprocessing
+1. Data ingestion
+2. Data cleaning and preprocessing
 3. Exploratory Data Analysis
-4. Feature Engineering
-5. Model Training
-   - Logistic Regression
-   - Random Forest
-   - Other classification models
-6. Model Evaluation
-7. Model Selection
-8. Deployment using Flask
+4. Feature transformation
+5. Numerical and categorical preprocessing using `ColumnTransformer`
+6. Model training
+7. Model evaluation and comparison
+8. Hyperparameter tuning
+9. Best model selection
+10. Model serialization
+11. Real-time prediction through Flask
+
+### Models Evaluated
+
+* Logistic Regression
+* KNN
+* SVM
+* Decision Tree
+* Random Forest
+* Gradient Boosting
+* XGBoost
+* CatBoost
+* AdaBoost
+
+### Model Performance
+
+The selected Logistic Regression model achieved:
+
+* **Test Accuracy: 82.11%**
+* **Train-Test Accuracy Gap: ~1.76%**
 
 ---
 
-## How It Works
+## Application Flow
 
-1. User enters customer details in the web form
-2. Data is sent to Flask backend
-3. Input is converted into a DataFrame
-4. Preprocessing is applied using saved transformer
-5. Trained model predicts churn
-6. Result is displayed on the web page
+```text
+User Input
+    ↓
+Flask Web Application
+    ↓
+DataFrame
+    ↓
+Saved Preprocessor
+    ↓
+Trained ML Model
+    ↓
+Churn Prediction
+    ↓
+Web Result
+```
+
+The application returns:
+
+* **Customer will CHURN**
+* **Customer will NOT CHURN**
 
 ---
 
-## Model Output
+## Deployment
+The application was containerized using **Docker** and served using **Gunicorn**.
 
-The model predicts:
-- 1 → Customer will churn
-- 0 → Customer will not churn
+### Live Application
 
-In the application, this is converted into:
-- Customer will CHURN
-- Customer will NOT CHURN
+**[IBM Customer Churn Prediction](https://ibmcustomerchurn.onrender.com)**
 
 ---
+
 ## Conclusion
 
-This project demonstrates how machine learning can be used to solve real business problems like customer churn. It combines data preprocessing, model building, and deployment into a complete end-to-end system.
-
-
-
+This project demonstrates an end-to-end machine learning workflow, from data preprocessing and model development to real-time Flask prediction, Docker containerization, cloud deployment on Render, and CI/CD preparation with Jenkins.
